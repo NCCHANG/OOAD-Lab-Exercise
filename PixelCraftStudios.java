@@ -1,0 +1,18 @@
+import javax.swing.*;
+
+public class PixelCraftStudios extends JFrame {
+    PixelCraftStudios() {
+        super("Pixel Craft Studios");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(800, 600);
+        //------------------------
+        JToolBar toolbar = new JToolBar();
+        add(toolbar, "North");
+        //-----------------------
+        setVisible(true);
+    }
+
+    public static void main(String[] args) {
+        new PixelCraftStudios();
+    }
+}
