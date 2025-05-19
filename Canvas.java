@@ -23,5 +23,5 @@ abstract public class Canvas extends JPanel{
         return height;
     }
 
-    public abstract void paintComponent(Graphics g);
+    protected abstract void paintComponent(Graphics g);
 }

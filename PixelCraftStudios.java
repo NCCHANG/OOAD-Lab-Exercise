@@ -8,6 +8,7 @@ public class PixelCraftStudios extends JFrame {
         //------------------------
         JToolBar toolbar = new JToolBar();
         add(toolbar, "North");
+        add(new DrawingCanvas(800, 800));
         //-----------------------
         setVisible(true);
     }
