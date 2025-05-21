@@ -12,7 +12,6 @@ public class DrawingCanvas extends Canvas implements MouseListener, MouseMotionL
 
     DrawingCanvas(int width, int height) {
         super(width, height);
-        setSize(width, height);
         setBackground(Color.white);
         setVisible(true);
         this.addMouseListener(this);
