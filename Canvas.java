@@ -8,6 +8,7 @@ abstract public class Canvas extends JPanel{
     Canvas(int width, int height) {
         this.width = width;
         this.height = height;
+        setSize(width, height);
     }
 
     public void setWidth(int width) {
