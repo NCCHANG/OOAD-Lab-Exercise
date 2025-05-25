@@ -1,6 +1,9 @@
 import javax.swing.*;
 
 public class PixelCraftStudios extends JFrame {
+    //track left/right canvas existence
+    boolean leftCanvas = false;
+    boolean rightCanvas = false;
     PixelCraftStudios() {
         super("Pixel Craft Studios");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
