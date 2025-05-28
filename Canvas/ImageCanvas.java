@@ -1,4 +1,6 @@
+package Canvas;
 import javax.swing.*;
+
 import java.awt.*;
 
 public class ImageCanvas extends Canvas {

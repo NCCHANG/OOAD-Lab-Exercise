@@ -1,9 +1,9 @@
 import javax.swing.*;
 
+import Canvas.CreateCanvasButton;
+import Canvas.DrawingCanvas;
+
 public class PixelCraftStudios extends JFrame {
-    //track left/right canvas existence
-    boolean leftCanvas = false;
-    boolean rightCanvas = false;
     PixelCraftStudios() {
         super("Pixel Craft Studios");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -11,7 +11,14 @@ public class PixelCraftStudios extends JFrame {
         //------------------------
         JToolBar toolbar = new JToolBar();
         add(toolbar, "North");
-        add(new DrawingCanvas(800, 800));
+
+        CreateCanvasButton createCanvasButton = new CreateCanvasButton(new ImageIcon("./icon/create.png"), 30, 30);
+        createCanvasButton.setBorderPainted(false);
+        createCanvasButton.setFocusPainted(false);
+        createCanvasButton.addActionListener(new Canvas.CreateCanvasListener());
+        createCanvasButton.setId("createDrawingCanvas");
+        toolbar.add(createCanvasButton);
+
         //-----------------------
         setVisible(true);
     }
