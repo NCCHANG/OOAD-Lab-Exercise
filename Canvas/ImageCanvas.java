@@ -5,7 +5,7 @@ import java.awt.*;
 
 public class ImageCanvas extends Canvas {
     
-    ImageCanvas(int width, int height) {
+    public ImageCanvas(int width, int height) {
         super(width, height);
         setBackground(Color.white);
         setVisible(true);
