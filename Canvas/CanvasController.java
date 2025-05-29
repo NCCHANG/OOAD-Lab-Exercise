@@ -9,6 +9,7 @@ public class CanvasController {
     }
     
     public void setLeftImageCanvas(ImageCanvas leftImageCanvas) {
+        pixelCraftStudios.setLeftImageCanvas(leftImageCanvas);
     }
     public void setRightDrawingCanvas(DrawingCanvas rightDrawingCanvas) {
         pixelCraftStudios.setRightDrawingCanvas(rightDrawingCanvas);

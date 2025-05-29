@@ -29,14 +29,12 @@ public class CreateCanvasListener implements ActionListener{
             if("CREATE_LEFTCANVAS".equals(command)) {
                 ImageCanvas leftImageCanvas = new ImageCanvas(width, height);
                 canvasController.setLeftImageCanvas(leftImageCanvas);
+                leftImageCanvas.repaint();
             } else if("CREATE_RIGHTCANVAS".equals(command)) {
                 DrawingCanvas rightDrawingCanvas = new DrawingCanvas(width, height);
                 canvasController.setRightDrawingCanvas(rightDrawingCanvas);
+                rightDrawingCanvas.repaint();
             }
-            
-            // Repaint the canvases
-            // leftImageCanvas.repaint();
-            // rightDrawingCanvas.repaint();
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(null, "Invalid input. Please enter valid numbers for width and height.");
         }
