@@ -37,12 +37,21 @@ public class DrawingCanvas extends Canvas implements MouseListener, MouseMotionL
         oldPnt = newPnt;
     }
 
+    public void mouseMoved(MouseEvent e) {
+        oldPnt = e.getPoint();
+    }
+    public void setPenStroke(int penStroke) {
+        this.penStroke = penStroke;
+    }
+    public void setPenColor(Color penColor) {
+        this.penColor = penColor;
+    }
+    public Color getPenColor() {
+        return penColor;
+    }
     public void mousePressed(MouseEvent e) {}
     public void mouseReleased(MouseEvent e) {}
     public void mouseClicked(MouseEvent e) {}
     public void mouseEntered(MouseEvent e) {}
     public void mouseExited(MouseEvent e) {}
-    public void mouseMoved(MouseEvent e) {
-        oldPnt = e.getPoint();
-    }
 }
