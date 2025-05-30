@@ -3,7 +3,7 @@ import java.awt.*;
 
 import javax.swing.*;
 
-import Canvas.CreateCanvasButton;
+import Button.CreateCanvasButton;
 import Canvas.DrawingCanvas;
 import Listener.CreateCanvasListener;
 import Canvas.CanvasController;
