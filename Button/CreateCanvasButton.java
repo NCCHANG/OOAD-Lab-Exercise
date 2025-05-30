@@ -31,23 +31,4 @@ public class CreateCanvasButton extends JButton {
         setSize(width, height);
     }
 
-    public int getWidth() {
-        return width;
-    }
-    public int getHeight() {
-        return height;
-    }
-    public String getId() {
-        return id;
-    }
-
-    public void setWidth(int width) {
-        this.width = width;
-    }
-    public void setHeight(int height) {
-        this.height = height;
-    }
-    public void setId(String id) {
-        this.id = id;
-    }
 }
