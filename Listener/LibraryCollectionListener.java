@@ -21,7 +21,10 @@ public class LibraryCollectionListener implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        JFileChooser fileChooser = new JFileChooser();
+        File defaultFile = new File("./Image/defaultImage.png");
+        JFileChooser fileChooser = new JFileChooser(defaultFile.getParentFile());
+        fileChooser.setSelectedFile(defaultFile);
+
         int result = fileChooser.showOpenDialog(null);
         if (result == JFileChooser.APPROVE_OPTION) {
             File selectedFile = fileChooser.getSelectedFile();
