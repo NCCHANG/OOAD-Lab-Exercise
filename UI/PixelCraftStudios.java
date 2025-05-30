@@ -7,6 +7,8 @@ import Button.CreateCanvasButton;
 import Canvas.DrawingCanvas;
 import Listener.CreateCanvasListener;
 import Canvas.CanvasController;
+import Button.ColourSelectionButton;
+import Listener.ColourSelectionListener;
 
 public class PixelCraftStudios extends JFrame {
     private int PixelCraftStudiosWidth = 800;
@@ -19,6 +21,7 @@ public class PixelCraftStudios extends JFrame {
     private CreateCanvasButton rightCreateCanvasButton;
     private JPanel leftCanvasPanel;
     private JPanel rightCanvasPanel;
+    private ColourSelectionButton colourSelectionButton;
     JSplitPane splitPane;
     PixelCraftStudios() {
         super("Pixel Craft Studios");
@@ -46,6 +49,7 @@ public class PixelCraftStudios extends JFrame {
         rightCreateCanvasButton.setActionCommand("CREATE_RIGHTCANVAS");
         rightCreateCanvasButton.addActionListener(new CreateCanvasListener(canvasController));
         rightToolbar.add(rightCreateCanvasButton);
+        
 
         leftCreateCanvasButton = new CreateCanvasButton(new ImageIcon("./icon/create.png"), 30, 30);
         leftCreateCanvasButton.setBorderPainted(false);
@@ -53,6 +57,15 @@ public class PixelCraftStudios extends JFrame {
         leftCreateCanvasButton.setActionCommand("CREATE_LEFTCANVAS");
         leftCreateCanvasButton.addActionListener(new CreateCanvasListener(canvasController));
         leftToolbar.add(leftCreateCanvasButton);
+
+        // Create the button
+        colourSelectionButton = new ColourSelectionButton(new ImageIcon("./icon/color.png"), 30, 30);
+        colourSelectionButton.setPreferredSize(new Dimension(30, 30));
+        colourSelectionButton.setBorderPainted(false);
+        colourSelectionButton.setFocusPainted(false);
+        colourSelectionButton.setActionCommand("SELECT_COLOR");
+        colourSelectionButton.addActionListener(new ColourSelectionListener(colourSelectionButton));
+        leftToolbar.add(colourSelectionButton);
         //------------------------
 
         leftCanvasPanel = new JPanel(new BorderLayout());
