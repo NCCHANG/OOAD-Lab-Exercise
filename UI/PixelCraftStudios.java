@@ -6,9 +6,13 @@ import javax.swing.*;
 import Button.CreateCanvasButton;
 import Canvas.DrawingCanvas;
 import Listener.CreateCanvasListener;
+import Listener.SaveButtonListener;
+import Listener.StrokeSizeListener;
 import Canvas.CanvasController;
 import Button.ColourSelectionButton;
 import Listener.ColourSelectionListener;
+import Button.SaveButton;
+import Button.StrokeSizeButton;
 
 public class PixelCraftStudios extends JFrame {
     private int PixelCraftStudiosWidth = 800;
@@ -22,6 +26,10 @@ public class PixelCraftStudios extends JFrame {
     private JPanel leftCanvasPanel;
     private JPanel rightCanvasPanel;
     private ColourSelectionButton colourSelectionButton;
+    private SaveButton leftSaveButton;
+    private SaveButton rightSaveButton;
+    private StrokeSizeButton strokeSizeButton;
+
     JSplitPane splitPane;
     PixelCraftStudios() {
         super("Pixel Craft Studios");
@@ -58,7 +66,6 @@ public class PixelCraftStudios extends JFrame {
         leftCreateCanvasButton.addActionListener(new CreateCanvasListener(canvasController));
         leftToolbar.add(leftCreateCanvasButton);
 
-        // Create the button
         colourSelectionButton = new ColourSelectionButton(new ImageIcon("./icon/color.png"), 30, 30);
         colourSelectionButton.setPreferredSize(new Dimension(30, 30));
         colourSelectionButton.setBorderPainted(false);
@@ -66,6 +73,30 @@ public class PixelCraftStudios extends JFrame {
         colourSelectionButton.setActionCommand("SELECT_COLOR");
         colourSelectionButton.addActionListener(new ColourSelectionListener(colourSelectionButton));
         leftToolbar.add(colourSelectionButton);
+
+        leftSaveButton = new SaveButton(new ImageIcon("./icon/save.png"), 30, 30);
+        leftSaveButton.setPreferredSize(new Dimension(30, 30));
+        leftSaveButton.setBorderPainted(false);
+        leftSaveButton.setFocusPainted(false);
+        leftSaveButton.setActionCommand("SAVE_BUTTON");
+        leftSaveButton.addActionListener(new SaveButtonListener(leftSaveButton));
+        leftToolbar.add(leftSaveButton);
+
+        rightSaveButton = new SaveButton(new ImageIcon("./icon/save.png"), 30, 30);
+        rightSaveButton.setPreferredSize(new Dimension(30, 30));
+        rightSaveButton.setBorderPainted(false);
+        rightSaveButton.setFocusPainted(false);
+        rightSaveButton.setActionCommand("SAVE_BUTTON");
+        rightSaveButton.addActionListener(new SaveButtonListener(rightSaveButton));
+        rightToolbar.add(rightSaveButton);
+
+        strokeSizeButton = new StrokeSizeButton(new ImageIcon("./icon/stroke.png"), 30, 30);
+        strokeSizeButton.setPreferredSize(new Dimension(30, 30));
+        strokeSizeButton.setBorderPainted(false);
+        strokeSizeButton.setFocusPainted(false);
+        strokeSizeButton.setActionCommand("STROKE_BUTTON");
+        strokeSizeButton.addActionListener(new StrokeSizeListener(strokeSizeButton));
+        rightToolbar.add(strokeSizeButton);
         //------------------------
 
         leftCanvasPanel = new JPanel(new BorderLayout());
