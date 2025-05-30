@@ -4,6 +4,7 @@ import java.awt.*;
 import javax.swing.*;
 
 import Button.CreateCanvasButton;
+import Canvas.ImageCanvas;
 import Canvas.DrawingCanvas;
 import Listener.CreateCanvasListener;
 import Canvas.CanvasController;
@@ -17,6 +18,8 @@ public class PixelCraftStudios extends JFrame {
     private JPanel leftToolbar;
     private JPanel rightToolbar;
     private CanvasController canvasController;
+    private ImageCanvas imageCanvas;
+    private DrawingCanvas drawingCanvas;
     private CreateCanvasButton leftCreateCanvasButton;
     private CreateCanvasButton rightCreateCanvasButton;
     private JPanel leftCanvasPanel;
@@ -59,13 +62,13 @@ public class PixelCraftStudios extends JFrame {
         leftToolbar.add(leftCreateCanvasButton);
 
         // Create the button
-        colourSelectionButton = new ColourSelectionButton(new ImageIcon("./icon/color.png"), 30, 30);
+        colourSelectionButton = new ColourSelectionButton(new ImageIcon("./icon/color.png"), 30, 30, drawingCanvas);
         colourSelectionButton.setPreferredSize(new Dimension(30, 30));
         colourSelectionButton.setBorderPainted(false);
         colourSelectionButton.setFocusPainted(false);
         colourSelectionButton.setActionCommand("SELECT_COLOR");
         colourSelectionButton.addActionListener(new ColourSelectionListener(colourSelectionButton));
-        leftToolbar.add(colourSelectionButton);
+        rightToolbar.add(colourSelectionButton);
         //------------------------
 
         leftCanvasPanel = new JPanel(new BorderLayout());
@@ -84,6 +87,8 @@ public class PixelCraftStudios extends JFrame {
     }
 
     public void setRightDrawingCanvas(DrawingCanvas rightDrawingCanvas) {
+        drawingCanvas = rightDrawingCanvas;
+        colourSelectionButton.setDrawingCanvas(drawingCanvas);
         rightCanvasPanel.add(rightDrawingCanvas, BorderLayout.CENTER);
         rightCanvasPanel.revalidate();
         rightCanvasPanel.repaint();
