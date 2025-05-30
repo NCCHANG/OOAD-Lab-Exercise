@@ -4,10 +4,11 @@ import java.awt.*;
 import javax.swing.*;
 
 import Button.CreateCanvasButton;
-import Canvas.ImageCanvas;
+import Button.LibraryCollectionButton;
 import Canvas.DrawingCanvas;
 import Listener.CreateCanvasListener;
 import Listener.SaveButtonListener;
+import Listener.LibraryCollectionListener;
 import Listener.StrokeSizeListener;
 import Canvas.CanvasController;
 import Button.ColourSelectionButton;
@@ -22,9 +23,9 @@ public class PixelCraftStudios extends JFrame {
     private JPanel leftToolbar;
     private JPanel rightToolbar;
     private CanvasController canvasController;
-    private ImageCanvas imageCanvas;
     private DrawingCanvas drawingCanvas;
     private CreateCanvasButton leftCreateCanvasButton;
+    private LibraryCollectionButton leftLibraryCollectionButton;
     private CreateCanvasButton rightCreateCanvasButton;
     private JPanel leftCanvasPanel;
     private JPanel rightCanvasPanel;
@@ -86,6 +87,13 @@ public class PixelCraftStudios extends JFrame {
         leftSaveButton.addActionListener(new SaveButtonListener(leftSaveButton));
         leftToolbar.add(leftSaveButton);
 
+        leftLibraryCollectionButton = new LibraryCollectionButton(new ImageIcon("./icon/ImageLibrary.png"), 30, 30);
+        leftLibraryCollectionButton.setBorderPainted(false);
+        leftLibraryCollectionButton.setFocusPainted(false);
+        leftLibraryCollectionButton.setActionCommand("OPEN_LIBRARY_COLLECTION");
+        leftLibraryCollectionButton.addActionListener(new LibraryCollectionListener(canvasController));
+        leftToolbar.add(leftLibraryCollectionButton);
+
         rightSaveButton = new SaveButton(new ImageIcon("./icon/save.png"), 30, 30);
         rightSaveButton.setPreferredSize(new Dimension(30, 30));
         rightSaveButton.setBorderPainted(false);
@@ -104,7 +112,7 @@ public class PixelCraftStudios extends JFrame {
         //------------------------
 
         leftCanvasPanel = new JPanel(new BorderLayout());
-        leftCanvasPanel.setBackground(Color.WHITE);
+        leftCanvasPanel.setBackground(Color.LIGHT_GRAY);
         
         rightCanvasPanel = new JPanel(new BorderLayout());
         rightCanvasPanel.setBackground(Color.LIGHT_GRAY);
