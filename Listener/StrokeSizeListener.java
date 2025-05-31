@@ -2,8 +2,6 @@ package Listener;
 
 import java.awt.event.*;
 
-
-
 public class StrokeSizeListener implements ActionListener {
 
     private Button.StrokeSizeButton strokeSizeButton;
