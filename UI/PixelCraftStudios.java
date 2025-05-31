@@ -6,6 +6,7 @@ import javax.swing.*;
 import Button.CreateCanvasButton;
 import Button.LibraryCollectionButton;
 import Canvas.DrawingCanvas;
+import Canvas.ImageCanvas;
 import Listener.CreateCanvasListener;
 import Listener.SaveButtonListener;
 import Listener.LibraryCollectionListener;
@@ -23,6 +24,7 @@ public class PixelCraftStudios extends JFrame {
     private JPanel leftToolbar;
     private JPanel rightToolbar;
     private CanvasController canvasController;
+    private ImageCanvas imageCanvas;
     private DrawingCanvas drawingCanvas;
     private CreateCanvasButton leftCreateCanvasButton;
     private LibraryCollectionButton leftLibraryCollectionButton;
@@ -109,6 +111,18 @@ public class PixelCraftStudios extends JFrame {
         strokeSizeButton.setActionCommand("STROKE_BUTTON");
         strokeSizeButton.addActionListener(new StrokeSizeListener(strokeSizeButton));
         rightToolbar.add(strokeSizeButton);
+
+        JSlider rotationSlider = new JSlider(JSlider.HORIZONTAL, 0, 360, 0); // 0 to 360 degrees
+        rotationSlider.setMajorTickSpacing(90);
+        rotationSlider.setMinorTickSpacing(15);
+        rotationSlider.setPaintTicks(true);
+        rotationSlider.setPaintLabels(true);
+        rightToolbar.add(rotationSlider);
+
+        rotationSlider.addChangeListener(e -> {
+            int angle = rotationSlider.getValue();
+            imageCanvas.setRotationAngle(angle);
+        });
         //------------------------
 
         leftCanvasPanel = new JPanel(new BorderLayout());
@@ -126,8 +140,8 @@ public class PixelCraftStudios extends JFrame {
         setVisible(true);
     }
 
-    public void setRightDrawingCanvas(DrawingCanvas rightDrawingCanvas) {
-        drawingCanvas = rightDrawingCanvas;
+    public void setRightDrawingCanvas(DrawingCanvas rightDrawingCanvas, DrawingCanvas drawingCanvas) {
+        this.drawingCanvas = drawingCanvas; // Store the reference to the DrawingCanvas
         colourSelectionButton.setDrawingCanvas(drawingCanvas);
         rightCanvasPanel.add(rightDrawingCanvas, BorderLayout.CENTER);
         rightCanvasPanel.revalidate();
@@ -135,7 +149,8 @@ public class PixelCraftStudios extends JFrame {
         rightCreateCanvasButton.setEnabled(false); // Disable button after creating canvas
     }
 
-    public void setLeftImageCanvas(JPanel leftImageCanvas) {
+    public void setLeftImageCanvas(JPanel leftImageCanvas, ImageCanvas imageCanvas) {
+        this.imageCanvas = imageCanvas; // Store the reference to the ImageCanvas
         leftCanvasPanel.add(leftImageCanvas, BorderLayout.CENTER);
         leftCanvasPanel.revalidate();
         leftCanvasPanel.repaint();
