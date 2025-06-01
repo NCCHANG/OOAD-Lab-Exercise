@@ -34,6 +34,7 @@ public class PixelCraftStudios extends JFrame {
     private ColourSelectionButton colourSelectionButton;
     private SaveButton leftSaveButton;
     private SaveButton rightSaveButton;
+    private StrokeSizeListener strokeSizeListener;
     private StrokeSizeButton strokeSizeButton;
 
     JSplitPane splitPane;
@@ -104,12 +105,22 @@ public class PixelCraftStudios extends JFrame {
         rightSaveButton.addActionListener(new SaveButtonListener(rightSaveButton));
         rightToolbar.add(rightSaveButton);
 
+        // strokeSizeButton = new StrokeSizeButton(new ImageIcon("./icon/stroke.png"), 30, 30);
+        // strokeSizeButton.setPreferredSize(new Dimension(30, 30));
+        // strokeSizeButton.setBorderPainted(false);
+        // strokeSizeButton.setFocusPainted(false);
+        // strokeSizeButton.setActionCommand("STROKE_BUTTON");
+        // strokeSizeButton.addActionListener(new StrokeSizeListener(strokeSizeButton));
+        // rightToolbar.add(strokeSizeButton);
+
         strokeSizeButton = new StrokeSizeButton(new ImageIcon("./icon/stroke.png"), 30, 30);
         strokeSizeButton.setPreferredSize(new Dimension(30, 30));
         strokeSizeButton.setBorderPainted(false);
         strokeSizeButton.setFocusPainted(false);
         strokeSizeButton.setActionCommand("STROKE_BUTTON");
-        strokeSizeButton.addActionListener(new StrokeSizeListener(strokeSizeButton));
+        // Instantiate the listener and store it in the field
+        strokeSizeListener = new StrokeSizeListener(strokeSizeButton); // Use the constructor that takes only the button
+        strokeSizeButton.addActionListener(strokeSizeListener);
         rightToolbar.add(strokeSizeButton);
 
         JSlider rotationSlider = new JSlider(JSlider.HORIZONTAL, 0, 360, 0); // 0 to 360 degrees
@@ -143,6 +154,10 @@ public class PixelCraftStudios extends JFrame {
     public void setRightDrawingCanvas(DrawingCanvas rightDrawingCanvas, DrawingCanvas drawingCanvas) {
         this.drawingCanvas = drawingCanvas; // Store the reference to the DrawingCanvas
         colourSelectionButton.setDrawingCanvas(drawingCanvas);
+        // Set the drawing canvas for the stroke size listener
+        if (strokeSizeListener != null) { // Ensure listener is initialized
+            strokeSizeListener.setDrawingCanvas(drawingCanvas);
+        }
         rightCanvasPanel.add(rightDrawingCanvas, BorderLayout.CENTER);
         rightCanvasPanel.revalidate();
         rightCanvasPanel.repaint();

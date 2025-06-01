@@ -48,6 +48,9 @@ public class DrawingCanvas extends Canvas implements MouseListener, MouseMotionL
     public Color getPenColor() {
         return penColor;
     }
+    public int getPenStroke() {
+        return penStroke;
+    }
     public void mousePressed(MouseEvent e) {}
     public void mouseReleased(MouseEvent e) {}
     public void mouseClicked(MouseEvent e) {}
