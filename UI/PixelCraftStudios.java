@@ -8,7 +8,7 @@ import Button.LibraryCollectionButton;
 import Canvas.DrawingCanvas;
 import Canvas.ImageCanvas;
 import Listener.CreateCanvasListener;
-import Listener.SaveButtonListener;
+import Listener.SaveButtonListener; // Ensure this import is present
 import Listener.LibraryCollectionListener;
 import Listener.StrokeSizeListener;
 import Canvas.CanvasController;
@@ -34,8 +34,9 @@ public class PixelCraftStudios extends JFrame {
     private ColourSelectionButton colourSelectionButton;
     private SaveButton leftSaveButton;
     private SaveButton rightSaveButton;
-    private StrokeSizeListener strokeSizeListener;
     private StrokeSizeButton strokeSizeButton;
+    private StrokeSizeListener strokeSizeListener; // Added this field for the StrokeSizeListener
+    private SaveButtonListener rightSaveButtonListener; // <--- Add this new field for the right save button listener
 
     JSplitPane splitPane;
     PixelCraftStudios() {
@@ -73,67 +74,54 @@ public class PixelCraftStudios extends JFrame {
         leftCreateCanvasButton.addActionListener(new CreateCanvasListener(canvasController));
         leftToolbar.add(leftCreateCanvasButton);
 
-        // Create the button
-        colourSelectionButton = new ColourSelectionButton(new ImageIcon("./icon/color.png"), 30, 30, drawingCanvas);
-        colourSelectionButton.setPreferredSize(new Dimension(30, 30));
-        colourSelectionButton.setBorderPainted(false);
-        colourSelectionButton.setFocusPainted(false);
-        colourSelectionButton.setActionCommand("SELECT_COLOR");
-        colourSelectionButton.addActionListener(new ColourSelectionListener(colourSelectionButton));
-        leftToolbar.add(colourSelectionButton);
-
-        leftSaveButton = new SaveButton(new ImageIcon("./icon/save.png"), 30, 30);
-        leftSaveButton.setPreferredSize(new Dimension(30, 30));
-        leftSaveButton.setBorderPainted(false);
-        leftSaveButton.setFocusPainted(false);
-        leftSaveButton.setActionCommand("SAVE_BUTTON");
-        leftSaveButton.addActionListener(new SaveButtonListener(leftSaveButton));
-        leftToolbar.add(leftSaveButton);
-
+        
         leftLibraryCollectionButton = new LibraryCollectionButton(new ImageIcon("./icon/ImageLibrary.png"), 30, 30);
         leftLibraryCollectionButton.setBorderPainted(false);
         leftLibraryCollectionButton.setFocusPainted(false);
         leftLibraryCollectionButton.setActionCommand("OPEN_LIBRARY_COLLECTION");
         leftLibraryCollectionButton.addActionListener(new LibraryCollectionListener(canvasController));
         leftToolbar.add(leftLibraryCollectionButton);
+        
+        JSlider rotationSlider = new JSlider(JSlider.HORIZONTAL, 0, 360, 0); // 0 to 360 degrees
+        rotationSlider.setMajorTickSpacing(90);
+        rotationSlider.setMinorTickSpacing(15);
+        rotationSlider.setPaintTicks(true);
+        rotationSlider.setPaintLabels(true);
+        leftToolbar.add(rotationSlider);
+
+        rotationSlider.addChangeListener(e -> {
+            int angle = rotationSlider.getValue();
+            if (imageCanvas != null) { 
+                imageCanvas.setRotationAngle(angle);
+            }
+        });
+
+        colourSelectionButton = new ColourSelectionButton(new ImageIcon("./icon/color.png"), 30, 30, drawingCanvas);
+        colourSelectionButton.setPreferredSize(new Dimension(30, 30));
+        colourSelectionButton.setBorderPainted(false);
+        colourSelectionButton.setFocusPainted(false);
+        colourSelectionButton.setActionCommand("SELECT_COLOR");
+        colourSelectionButton.addActionListener(new ColourSelectionListener(colourSelectionButton));
+        rightToolbar.add(colourSelectionButton);
+        
+        strokeSizeButton = new StrokeSizeButton(new ImageIcon("./icon/stroke.png"), 30, 30);
+        strokeSizeButton.setPreferredSize(new Dimension(30, 30));
+        strokeSizeButton.setBorderPainted(false);
+        strokeSizeButton.setFocusPainted(false);
+        strokeSizeButton.setActionCommand("STROKE_BUTTON");
+        strokeSizeListener = new StrokeSizeListener(strokeSizeButton);
+        strokeSizeButton.addActionListener(strokeSizeListener);
+        rightToolbar.add(strokeSizeButton);
 
         rightSaveButton = new SaveButton(new ImageIcon("./icon/save.png"), 30, 30);
         rightSaveButton.setPreferredSize(new Dimension(30, 30));
         rightSaveButton.setBorderPainted(false);
         rightSaveButton.setFocusPainted(false);
         rightSaveButton.setActionCommand("SAVE_BUTTON");
-        rightSaveButton.addActionListener(new SaveButtonListener(rightSaveButton));
+        rightSaveButtonListener = new SaveButtonListener(rightSaveButton);
+        rightSaveButton.addActionListener(rightSaveButtonListener);
         rightToolbar.add(rightSaveButton);
 
-        // strokeSizeButton = new StrokeSizeButton(new ImageIcon("./icon/stroke.png"), 30, 30);
-        // strokeSizeButton.setPreferredSize(new Dimension(30, 30));
-        // strokeSizeButton.setBorderPainted(false);
-        // strokeSizeButton.setFocusPainted(false);
-        // strokeSizeButton.setActionCommand("STROKE_BUTTON");
-        // strokeSizeButton.addActionListener(new StrokeSizeListener(strokeSizeButton));
-        // rightToolbar.add(strokeSizeButton);
-
-        strokeSizeButton = new StrokeSizeButton(new ImageIcon("./icon/stroke.png"), 30, 30);
-        strokeSizeButton.setPreferredSize(new Dimension(30, 30));
-        strokeSizeButton.setBorderPainted(false);
-        strokeSizeButton.setFocusPainted(false);
-        strokeSizeButton.setActionCommand("STROKE_BUTTON");
-        // Instantiate the listener and store it in the field
-        strokeSizeListener = new StrokeSizeListener(strokeSizeButton); // Use the constructor that takes only the button
-        strokeSizeButton.addActionListener(strokeSizeListener);
-        rightToolbar.add(strokeSizeButton);
-
-        JSlider rotationSlider = new JSlider(JSlider.HORIZONTAL, 0, 360, 0); // 0 to 360 degrees
-        rotationSlider.setMajorTickSpacing(90);
-        rotationSlider.setMinorTickSpacing(15);
-        rotationSlider.setPaintTicks(true);
-        rotationSlider.setPaintLabels(true);
-        rightToolbar.add(rotationSlider);
-
-        rotationSlider.addChangeListener(e -> {
-            int angle = rotationSlider.getValue();
-            imageCanvas.setRotationAngle(angle);
-        });
         //------------------------
 
         leftCanvasPanel = new JPanel(new BorderLayout());
@@ -155,8 +143,12 @@ public class PixelCraftStudios extends JFrame {
         this.drawingCanvas = drawingCanvas; // Store the reference to the DrawingCanvas
         colourSelectionButton.setDrawingCanvas(drawingCanvas);
         // Set the drawing canvas for the stroke size listener
-        if (strokeSizeListener != null) { // Ensure listener is initialized
+        if (strokeSizeListener != null) {
             strokeSizeListener.setDrawingCanvas(drawingCanvas);
+        }
+        // <--- Add this block to set the drawing canvas for the right save button listener
+        if (rightSaveButtonListener != null) {
+            rightSaveButtonListener.setDrawingCanvas(drawingCanvas);
         }
         rightCanvasPanel.add(rightDrawingCanvas, BorderLayout.CENTER);
         rightCanvasPanel.revalidate();
