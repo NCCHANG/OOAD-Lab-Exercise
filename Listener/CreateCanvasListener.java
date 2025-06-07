@@ -1,19 +1,21 @@
 package Listener;
-import java.awt.event.*;
-
-import javax.swing.JOptionPane;
 
 import Canvas.CanvasController;
 import Canvas.DrawingCanvas;
 import Canvas.ImageCanvas;
 
-public class CreateCanvasListener implements ActionListener{
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class CreateCanvasListener implements ActionListener {
+
     private CanvasController canvasController;
 
     public CreateCanvasListener(CanvasController canvasController) {
         this.canvasController = canvasController;
     }
-    
+
     @Override
     public void actionPerformed(ActionEvent e) {
         String command = e.getActionCommand();
@@ -25,12 +27,12 @@ public class CreateCanvasListener implements ActionListener{
         try {
             int width = Integer.parseInt(widthCanvas);
             int height = Integer.parseInt(heightCanvas);
-            
-            if("CREATE_LEFTCANVAS".equals(command)) {
+
+            if ("CREATE_LEFTCANVAS".equals(command)) {
                 ImageCanvas leftImageCanvas = new ImageCanvas(width, height);
                 canvasController.setLeftImageCanvas(leftImageCanvas);
                 leftImageCanvas.repaint();
-            } else if("CREATE_RIGHTCANVAS".equals(command)) {
+            } else if ("CREATE_RIGHTCANVAS".equals(command)) {
                 DrawingCanvas rightDrawingCanvas = new DrawingCanvas(width, height);
                 canvasController.setRightDrawingCanvas(rightDrawingCanvas);
                 rightDrawingCanvas.repaint();

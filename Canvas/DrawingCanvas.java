@@ -1,8 +1,9 @@
 package Canvas;
-import javax.swing.*;
 
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 
 public class DrawingCanvas extends Canvas implements MouseListener, MouseMotionListener {
     Point oldPnt = new Point();
@@ -18,9 +19,10 @@ public class DrawingCanvas extends Canvas implements MouseListener, MouseMotionL
         this.addMouseListener(this);
         this.addMouseMotionListener(this);
     }
+
     @Override
-    protected void paintComponent(Graphics g){
-        if(image == null){
+    protected void paintCanvas(Graphics g) {
+        if (image == null) {
             image = createImage(getWidth(), getHeight());
             g2d = (Graphics2D) image.getGraphics();
         } else {
@@ -40,18 +42,35 @@ public class DrawingCanvas extends Canvas implements MouseListener, MouseMotionL
     public void mouseMoved(MouseEvent e) {
         oldPnt = e.getPoint();
     }
+
     public void setPenStroke(int penStroke) {
         this.penStroke = penStroke;
     }
+
     public void setPenColor(Color penColor) {
         this.penColor = penColor;
     }
+
     public Color getPenColor() {
         return penColor;
     }
-    public void mousePressed(MouseEvent e) {}
-    public void mouseReleased(MouseEvent e) {}
-    public void mouseClicked(MouseEvent e) {}
-    public void mouseEntered(MouseEvent e) {}
-    public void mouseExited(MouseEvent e) {}
+
+    public int getPenStroke() {
+        return penStroke;
+    }
+
+    public void mousePressed(MouseEvent e) {
+    }
+
+    public void mouseReleased(MouseEvent e) {
+    }
+
+    public void mouseClicked(MouseEvent e) {
+    }
+
+    public void mouseEntered(MouseEvent e) {
+    }
+
+    public void mouseExited(MouseEvent e) {
+    }
 }

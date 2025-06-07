@@ -1,9 +1,8 @@
 package Button;
 
-import javax.swing.*;
-
 import Canvas.DrawingCanvas;
 
+import javax.swing.*;
 import java.awt.*;
 
 public class ColourSelectionButton extends JButton {
@@ -23,16 +22,16 @@ public class ColourSelectionButton extends JButton {
     }
 
     public void setSelectedColor(Color color) {
-        if(drawingCanvas != null) {
+        if (drawingCanvas != null) {
             this.selectedColor = color;
             setBackground(color);
             drawingCanvas.setPenColor(color);
-        }else {
+        } else {
             JOptionPane.showMessageDialog(
-                null,
-                "Please create a drawing canvas first!",
-                "Warning",
-                JOptionPane.WARNING_MESSAGE
+                    null,
+                    "Please create a drawing canvas first!",
+                    "Warning",
+                    JOptionPane.WARNING_MESSAGE
             );
         }
     }

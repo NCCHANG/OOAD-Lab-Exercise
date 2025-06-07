@@ -1,4 +1,5 @@
 package Button;
+
 import javax.swing.*;
 
 public class CreateCanvasButton extends JButton {
@@ -15,6 +16,7 @@ public class CreateCanvasButton extends JButton {
         this.height = height;
         setSize(width, height);
     }
+
     public CreateCanvasButton(Icon icon, int width, int height) {
         super(icon);
         this.icon = icon;
@@ -22,6 +24,7 @@ public class CreateCanvasButton extends JButton {
         this.height = height;
         setSize(width, height);
     }
+
     public CreateCanvasButton(String text, Icon icon, int width, int height) {
         super(text, icon);
         this.text = text;

@@ -1,7 +1,6 @@
 package Button;
 
 import javax.swing.*;
-import java.awt.*;
 
 public class SaveButton extends JButton {
     private int width;

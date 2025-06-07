@@ -1,4 +1,5 @@
 package Canvas;
+
 import UI.PixelCraftStudios;
 
 public class CanvasController {
@@ -8,13 +9,14 @@ public class CanvasController {
     public CanvasController(PixelCraftStudios pixelCraftStudios) {
         this.pixelCraftStudios = pixelCraftStudios;
     }
-    
+
     public void setLeftImageCanvas(ImageCanvas leftImageCanvas) {
         this.imageCanvas = leftImageCanvas;
-        pixelCraftStudios.setLeftImageCanvas(leftImageCanvas,leftImageCanvas);
+        pixelCraftStudios.setLeftImageCanvas(leftImageCanvas, leftImageCanvas);
     }
+
     public void setRightDrawingCanvas(DrawingCanvas rightDrawingCanvas) {
-        pixelCraftStudios.setRightDrawingCanvas(rightDrawingCanvas,rightDrawingCanvas);
+        pixelCraftStudios.setRightDrawingCanvas(rightDrawingCanvas, rightDrawingCanvas);
     }
 
     public ImageCanvas getImageCanvas() {

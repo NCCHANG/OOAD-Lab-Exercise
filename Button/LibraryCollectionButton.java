@@ -2,7 +2,7 @@ package Button;
 
 import javax.swing.*;
 
-public class LibraryCollectionButton extends JButton{
+public class LibraryCollectionButton extends JButton {
     private String id;
     private int width;
     private int height;
@@ -39,6 +39,7 @@ public class LibraryCollectionButton extends JButton{
     public int getWidth() {
         return width;
     }
+
     public int getHeight() {
         return height;
     }
@@ -46,6 +47,7 @@ public class LibraryCollectionButton extends JButton{
     public void setWidth(int width) {
         this.width = width;
     }
+
     public void setHeight(int height) {
         this.height = height;
     }
