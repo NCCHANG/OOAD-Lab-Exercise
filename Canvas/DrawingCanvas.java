@@ -2,10 +2,9 @@ package Canvas;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
-public class DrawingCanvas extends Canvas implements MouseListener, MouseMotionListener {
+public class DrawingCanvas extends Canvas implements MouseMotionListener {
     Point oldPnt = new Point();
     Point newPnt = new Point();
     Image image;
@@ -16,7 +15,6 @@ public class DrawingCanvas extends Canvas implements MouseListener, MouseMotionL
     public DrawingCanvas(int width, int height) {
         super(width, height);
         setVisible(true);
-        this.addMouseListener(this);
         this.addMouseMotionListener(this);
     }
 
@@ -57,20 +55,5 @@ public class DrawingCanvas extends Canvas implements MouseListener, MouseMotionL
 
     public int getPenStroke() {
         return penStroke;
-    }
-
-    public void mousePressed(MouseEvent e) {
-    }
-
-    public void mouseReleased(MouseEvent e) {
-    }
-
-    public void mouseClicked(MouseEvent e) {
-    }
-
-    public void mouseEntered(MouseEvent e) {
-    }
-
-    public void mouseExited(MouseEvent e) {
     }
 }
