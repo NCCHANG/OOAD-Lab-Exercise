@@ -8,7 +8,7 @@ public class UIController {
         mainPanel = new javax.swing.JPanel();
         mainPanel.setLayout(new java.awt.BorderLayout());
         currentPage = null;
-        showLoginPage();
+        showEventOrganizerFunctionalityPage();
     }
     public void showLoginPage() {
         if (currentPage != null) {
@@ -16,6 +16,14 @@ public class UIController {
             currentPage = null;
         }
         currentPage = new LoginPage();
+        mainPanel.add(currentPage);
+    }
+    public void showEventOrganizerFunctionalityPage() {
+        if (currentPage != null) {
+            mainPanel.remove(currentPage);
+            currentPage = null;
+        }
+        currentPage = new EventOrganizerFunctionalityPage();
         mainPanel.add(currentPage);
     }
     public javax.swing.JPanel getMainPanel() {
