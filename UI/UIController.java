@@ -4,61 +4,55 @@ public class UIController {
     private javax.swing.JPanel mainPanel;
     private UIPage currentPage;
 
+    private void removeCurrentPage() {
+        if (currentPage != null) {
+            mainPanel.remove(currentPage);
+            currentPage = null;
+        }
+    }
+
     public UIController() {
         mainPanel = new javax.swing.JPanel();
         mainPanel.setLayout(new java.awt.BorderLayout());
         currentPage = null;
-        showRegisterPage();
+        showBillPage();
     }
     public void showLoginPage() {
-        if (currentPage != null) {
-            mainPanel.remove(currentPage);
-            currentPage = null;
-        }
+        removeCurrentPage();
         currentPage = new LoginPage();
         mainPanel.add(currentPage);
     }
     public void showEventOrganizerFunctionalityPage() {
-        if (currentPage != null) {
-            mainPanel.remove(currentPage);
-            currentPage = null;
-        }
+        removeCurrentPage();
         currentPage = new EventOrganizerFunctionalityPage();
         mainPanel.add(currentPage);
     }
     public void showCreateEventPage() {
-        if (currentPage != null) {
-            mainPanel.remove(currentPage);
-            currentPage = null;
-        }
+        removeCurrentPage();
         currentPage = new CreateEventPage();
         mainPanel.add(currentPage);
     }
 
     public void showDeleteEventPage() {
-        if (currentPage != null) {
-            mainPanel.remove(currentPage);
-            currentPage = null;
-        }
+        removeCurrentPage();
         currentPage = new DeleteEventPage();
         mainPanel.add(currentPage);
     }
 
     public void showUpdateEventPage() {
-        if (currentPage != null) {
-            mainPanel.remove(currentPage);
-            currentPage = null;
-        }
+        removeCurrentPage();
         currentPage = new UpdateEventPage();
         mainPanel.add(currentPage);
     }
 
     public void showRegisterPage() {
-        if (currentPage != null) {
-            mainPanel.remove(currentPage);
-            currentPage = null;
-        }
+        removeCurrentPage();
         currentPage = new RegisterPage();
+        mainPanel.add(currentPage);
+    }
+    public void showBillPage() {
+        removeCurrentPage();
+        currentPage = new BillPage();
         mainPanel.add(currentPage);
     }
     public javax.swing.JPanel getMainPanel() {
