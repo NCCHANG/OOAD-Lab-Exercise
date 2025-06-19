@@ -8,7 +8,7 @@ public class UIController {
         mainPanel = new javax.swing.JPanel();
         mainPanel.setLayout(new java.awt.BorderLayout());
         currentPage = null;
-        showEventOrganizerFunctionalityPage();
+        showRegisterPage();
     }
     public void showLoginPage() {
         if (currentPage != null) {
@@ -24,6 +24,41 @@ public class UIController {
             currentPage = null;
         }
         currentPage = new EventOrganizerFunctionalityPage();
+        mainPanel.add(currentPage);
+    }
+    public void showCreateEventPage() {
+        if (currentPage != null) {
+            mainPanel.remove(currentPage);
+            currentPage = null;
+        }
+        currentPage = new CreateEventPage();
+        mainPanel.add(currentPage);
+    }
+
+    public void showDeleteEventPage() {
+        if (currentPage != null) {
+            mainPanel.remove(currentPage);
+            currentPage = null;
+        }
+        currentPage = new DeleteEventPage();
+        mainPanel.add(currentPage);
+    }
+
+    public void showUpdateEventPage() {
+        if (currentPage != null) {
+            mainPanel.remove(currentPage);
+            currentPage = null;
+        }
+        currentPage = new UpdateEventPage();
+        mainPanel.add(currentPage);
+    }
+
+    public void showRegisterPage() {
+        if (currentPage != null) {
+            mainPanel.remove(currentPage);
+            currentPage = null;
+        }
+        currentPage = new RegisterPage();
         mainPanel.add(currentPage);
     }
     public javax.swing.JPanel getMainPanel() {
