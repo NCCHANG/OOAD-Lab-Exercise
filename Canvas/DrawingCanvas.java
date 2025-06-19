@@ -20,7 +20,7 @@ public class DrawingCanvas extends Canvas implements MouseMotionListener {
 
     @Override
     protected void paintCanvas(Graphics g) {
-        if (image == null) {
+        if (image == null) { //when minimizing, create a new image for saving the drawing
             image = createImage(getWidth(), getHeight());
             g2d = (Graphics2D) image.getGraphics();
         } else {

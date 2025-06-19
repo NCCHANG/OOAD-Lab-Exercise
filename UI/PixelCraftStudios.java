@@ -29,9 +29,9 @@ public class PixelCraftStudios extends JFrame {
     private SaveButton leftSaveButton;
     private SaveButton rightSaveButton;
     private StrokeSizeButton strokeSizeButton;
-    private StrokeSizeListener strokeSizeListener; // Added this field for the StrokeSizeListener
-    private SaveButtonListener leftSaveButtonListener; // <--- Add this new field for the left save button listener
-    private SaveButtonListener rightSaveButtonListener; // <--- Add this new field for the right save button listener
+    private StrokeSizeListener strokeSizeListener; 
+    private SaveButtonListener leftSaveButtonListener;
+    private SaveButtonListener rightSaveButtonListener; 
 
 
     JSplitPane splitPane;
@@ -53,6 +53,7 @@ public class PixelCraftStudios extends JFrame {
         toolbar.add(rightToolbar);
         //------------------------
 
+        //to control the canvas indirectly
         canvasController = new CanvasController(this);
 
         //------------------------
@@ -92,20 +93,6 @@ public class PixelCraftStudios extends JFrame {
         leftSaveButton.addActionListener(leftSaveButtonListener);
         leftToolbar.add(leftSaveButton);
 
-        JSlider rotationSlider = new JSlider(JSlider.HORIZONTAL, 0, 360, 0); // 0 to 360 degrees
-        rotationSlider.setMajorTickSpacing(90);
-        rotationSlider.setMinorTickSpacing(15);
-        rotationSlider.setPaintTicks(true);
-        rotationSlider.setPaintLabels(true);
-        leftToolbar.add(rotationSlider);
-
-        rotationSlider.addChangeListener(e -> {
-            int angle = rotationSlider.getValue();
-            if (imageCanvas != null) {
-                imageCanvas.setRotation(angle);
-            }
-        });
-
         colourSelectionButton = new ColourSelectionButton(new ImageIcon("./icon/color.png"), 30, 30, drawingCanvas);
         colourSelectionButton.setPreferredSize(new Dimension(30, 30));
         colourSelectionButton.setBorderPainted(false);
@@ -134,12 +121,13 @@ public class PixelCraftStudios extends JFrame {
 
         //------------------------
 
+        //to hold drawing canvas
         leftCanvasPanel = new JPanel(new BorderLayout());
         leftCanvasPanel.setBackground(Color.LIGHT_GRAY);
-
+        //to hold image canvas
         rightCanvasPanel = new JPanel(new BorderLayout());
         rightCanvasPanel.setBackground(Color.LIGHT_GRAY);
-
+        // to split two canvas panels
         splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, leftCanvasPanel, rightCanvasPanel);
         splitPane.setDividerLocation(PixelCraftStudiosWidth / 2);
 
