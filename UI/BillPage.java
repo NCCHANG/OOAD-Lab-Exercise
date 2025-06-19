@@ -3,7 +3,7 @@ package UI;
 import java.awt.*;
 import javax.swing.*;
 
-public class RegisterPage extends UIPage {
+public class BillPage extends UIPage{ 
     private JPanel topPanel;
     private JPanel centerWrapper;
     private JPanel centerPanel;
@@ -14,13 +14,10 @@ public class RegisterPage extends UIPage {
     private DefaultListModel<String> eventListModel;
     private JScrollPane eventListScroll;
     private JList<String> eventList;
-    private JTextField eventInfoField;
-    private JButton registerButton;
-
-    public RegisterPage() {
+    private JButton payButton;
+    public BillPage() {
         initUI();
     }
-
     @Override
     public void initUI() {
         setLayout(new java.awt.BorderLayout());
@@ -38,7 +35,7 @@ public class RegisterPage extends UIPage {
         centerWrapper.setBackground(new Color(180, 180, 180));
         centerWrapper.add(centerPanel, new java.awt.GridBagConstraints());
 
-        eventListLabel = new JLabel("Event List:");
+        eventListLabel = new JLabel("Payment Summary:");
         eventListLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         eventListModel = new DefaultListModel<>();
@@ -61,44 +58,13 @@ public class RegisterPage extends UIPage {
         eventListPanel.add(Box.createRigidArea(new Dimension(0, 5)));
         eventListPanel.add(eventListScroll);
 
-        // Event Info Section (dark blue background)
-        JPanel eventInfoPanel = new JPanel();
-        eventInfoPanel.setLayout(new BoxLayout(eventInfoPanel, BoxLayout.Y_AXIS));
-        eventInfoPanel.setBackground(new Color(80, 76, 112));
-        eventInfoPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        eventInfoPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
-
-        JLabel eventInfoLabel = new JLabel("Event Info:");
-        eventInfoLabel.setForeground(Color.WHITE);
-        eventInfoLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
-
-        JPanel inputPanel = new JPanel(new BorderLayout(10, 0));
-        inputPanel.setBackground(new Color(80, 76, 112));
-
-        eventInfoField = new JTextField();
-        eventInfoField.setPreferredSize(new Dimension(400, 35));
-        eventInfoField.setBackground(new Color(180, 180, 200));
-
-        //tochange: add register button class and listener (pop up ask additional optional service if any.)
-        registerButton = new JButton("Register");
-        registerButton.setPreferredSize(new Dimension(90, 35));
-
-        inputPanel.add(eventInfoField, BorderLayout.CENTER);
-        inputPanel.add(registerButton, BorderLayout.EAST);
-
-        eventInfoPanel.add(eventInfoLabel);
-        eventInfoPanel.add(Box.createRigidArea(new Dimension(0, 5)));
-        eventInfoPanel.add(inputPanel);
-
-        // add listener when user selects an event from the list
-        eventList.addListSelectionListener(e -> {
-                String selected = eventList.getSelectedValue();
-                eventInfoField.setText(selected != null ? selected : "");
-        });
+        //tochange: add pay button class and listener
+        payButton = new JButton("Pay");
+        payButton.setPreferredSize(new Dimension(90, 35));
 
         centerPanel.add(eventListPanel);
         centerPanel.add(Box.createRigidArea(new Dimension(0, 10)));
-        centerPanel.add(eventInfoPanel);
+        centerPanel.add(payButton);
         
         bottomPanel = new JPanel();
         bottomPanel.setBackground(new Color(113, 91, 81));
