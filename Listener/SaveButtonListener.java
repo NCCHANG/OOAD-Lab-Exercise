@@ -69,7 +69,7 @@ public class SaveButtonListener implements ActionListener {
                 canvas.getHeight(),
                 BufferedImage.TYPE_INT_ARGB // Supports transparency
         );
-        Graphics2D g2d = image.createGraphics();
+        Graphics2D g2d = image.createGraphics(); // Create a Graphics2D object from the BufferedImage
         canvas.paint(g2d); // Paint the canvas content onto the BufferedImage
         g2d.dispose(); // Release graphics resources
 
@@ -94,14 +94,17 @@ public class SaveButtonListener implements ActionListener {
             }
 
             try {
+                // Save the BufferedImage to the selected file
                 ImageIO.write(image, "PNG", fileToSave);
                 JOptionPane.showMessageDialog(null, "Drawing saved successfully to:\n" + fileToSave.getAbsolutePath(), "Save Successful", JOptionPane.INFORMATION_MESSAGE);
                 System.out.println("Drawing saved to: " + fileToSave.getAbsolutePath());
             } catch (Exception ex) {
+                // Handle exceptions during saving
                 JOptionPane.showMessageDialog(null, "Error saving drawing: " + ex.getMessage(), "Save Error", JOptionPane.ERROR_MESSAGE);
-                ex.printStackTrace();
+                ex.printStackTrace(); // Print stack trace for debugging
             }
         } else {
+            // User cancelled the save operation
             System.out.println("Save operation cancelled by user via file chooser.");
         }
     }

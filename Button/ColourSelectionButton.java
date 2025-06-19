@@ -24,12 +24,12 @@ public class ColourSelectionButton extends JButton {
     public void setSelectedColor(Color color) {
         if (drawingCanvas != null) {
             this.selectedColor = color;
-            setBackground(color);
-            drawingCanvas.setPenColor(color);
+            setBackground(color); // Set the button background to the selected color
+            drawingCanvas.setPenColor(color); // Update the drawing canvas with the selected color
         } else {
             JOptionPane.showMessageDialog(
                     null,
-                    "Please create a drawing canvas first!",
+                    "Please create a drawing canvas first!", // Show warning if drawing canvas is not set
                     "Warning",
                     JOptionPane.WARNING_MESSAGE
             );
@@ -37,7 +37,7 @@ public class ColourSelectionButton extends JButton {
     }
 
     public Color getSelectedColor() {
-        return selectedColor;
+        return selectedColor; // Return the currently selected color
     }
 
     public void setDrawingCanvas(DrawingCanvas drawingCanvas) {

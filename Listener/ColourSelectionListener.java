@@ -20,9 +20,9 @@ public class ColourSelectionListener implements ActionListener {
         String command = e.getActionCommand();
 
         if ("SELECT_COLOR".equals(command)) {
-            Color newColor = JColorChooser.showDialog(null, "Choose a Color", colourSelectionButton.getSelectedColor());
+            Color newColor = JColorChooser.showDialog(null, "Choose a Color", colourSelectionButton.getSelectedColor()); //Open a color chooser dialog.
             if (newColor != null) {
-                colourSelectionButton.setSelectedColor(newColor);
+                colourSelectionButton.setSelectedColor(newColor); //Set the selected color in the ColourSelectionButton.
             }
         }
     }
