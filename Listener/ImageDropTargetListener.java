@@ -6,17 +6,17 @@ import Canvas.ImageItem.CustomImageItem;
 import Canvas.ImageItem.FlowerItem;
 import Canvas.ImageItem.ImageCanvasItem;
 
-import javax.imageio.ImageIO;
-import javax.swing.*;
-import java.awt.*;
-import java.awt.datatransfer.DataFlavor;
-import java.awt.datatransfer.Transferable;
-import java.awt.datatransfer.UnsupportedFlavorException;
-import java.awt.dnd.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.util.List;
+import javax.imageio.ImageIO; // for reading images
+import javax.swing.*; // for GUI components
+import java.awt.*; // for Point class
+import java.awt.datatransfer.DataFlavor; // for data transfer
+import java.awt.datatransfer.Transferable; // for transferable data
+import java.awt.datatransfer.UnsupportedFlavorException; // for unsupported flavor exceptions
+import java.awt.dnd.*; // for drag and drop functionality
+import java.awt.image.BufferedImage; // for image manipulation
+import java.io.File; // for file handling
+import java.io.IOException; // for IO exceptions
+import java.util.List; // for list handling
 
 public class ImageDropTargetListener implements DropTargetListener {
 

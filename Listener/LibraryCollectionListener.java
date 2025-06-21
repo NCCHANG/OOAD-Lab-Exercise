@@ -7,13 +7,13 @@ import Canvas.ImageItem.CustomImageItem;
 import Canvas.ImageItem.FlowerItem;
 import Canvas.ImageItem.ImageCanvasItem;
 
-import javax.imageio.ImageIO;
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
-import java.io.File;
+import javax.imageio.ImageIO; //for reading images
+import javax.swing.*; //for GUI components
+import java.awt.*; //for Point class
+import java.awt.event.ActionEvent; //for ActionListener interface
+import java.awt.event.ActionListener; //for handling button clicks
+import java.awt.image.BufferedImage; //for image manipulation
+import java.io.File; //for file handling
 
 public class LibraryCollectionListener implements ActionListener {
     private CanvasController canvasController;
@@ -33,7 +33,7 @@ public class LibraryCollectionListener implements ActionListener {
         fileChooser.setDialogTitle("Select an Image");
 
         int result = fileChooser.showOpenDialog(null);
-        if (result == JFileChooser.APPROVE_OPTION) {
+        if (result == JFileChooser.APPROVE_OPTION) {  // User selected a file
             File selectedFile = fileChooser.getSelectedFile();
             try {
                 BufferedImage img = ImageIO.read(selectedFile);
