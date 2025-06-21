@@ -15,7 +15,7 @@ public class UIController {
         mainPanel = new javax.swing.JPanel();
         mainPanel.setLayout(new java.awt.BorderLayout());
         currentPage = null;
-        showBillPage();
+        showCreateEventPage();
     }
     public void showLoginPage() {
         removeCurrentPage();
