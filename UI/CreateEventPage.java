@@ -12,22 +12,26 @@ import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.time.LocalDate;
+import java.time.LocalDate; // Still needed for LocalDate.now() and parsing
 import java.time.format.DateTimeParseException;
 import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
-import javax.swing.DefaultComboBoxModel; // Changed from DefaultListModel
+import javax.swing.DefaultComboBoxModel; 
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JComboBox; // Changed from JList
+import javax.swing.JComboBox; 
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane; // Still needed for JTextArea
-import javax.swing.JTextField;
+import javax.swing.JScrollPane; 
+import javax.swing.JTextField; // Back to JTextField
 import javax.swing.Box;
 import javax.swing.JTextArea;
+
+// Removed import com.toedter.calendar.JDateChooser;
+// Removed import java.util.Date;
+// Removed import java.time.ZoneId;
 
 public class CreateEventPage extends UIPage {
     private JPanel topPanel;
@@ -37,12 +41,12 @@ public class CreateEventPage extends UIPage {
     private JPanel bottomPanel;
 
     private JLabel eventListLabel;
-    private DefaultComboBoxModel<Event> eventComboBoxModel; // Changed to ComboBoxModel
-    private JComboBox<Event> eventComboBox; // Changed to JComboBox
+    private DefaultComboBoxModel<Event> eventComboBoxModel;
+    private JComboBox<Event> eventComboBox;
 
     private JTextField eventNameField;
     private JTextArea eventDescriptionArea;
-    private JTextField eventDateField;
+    private JTextField eventDateField; // Reverted to JTextField
     private JTextField organizerNameField;
     private JTextField venueField;
     private JTextField capacityField;
@@ -93,11 +97,11 @@ public class CreateEventPage extends UIPage {
         eventListLabel = new JLabel("Existing Events:");
         eventListLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-        eventComboBoxModel = new DefaultComboBoxModel<>(); // Changed model type
-        eventComboBox = new JComboBox<>(eventComboBoxModel); // Changed to JComboBox
+        eventComboBoxModel = new DefaultComboBoxModel<>();
+        eventComboBox = new JComboBox<>(eventComboBoxModel);
         eventComboBox.setAlignmentX(Component.LEFT_ALIGNMENT);
-        eventComboBox.setPreferredSize(new Dimension(800, 30)); // Set preferred size for combo box
-        eventComboBox.setMaximumSize(new Dimension(800, 30)); // Fixed width and height for combo box
+        eventComboBox.setPreferredSize(new Dimension(800, 30));
+        eventComboBox.setMaximumSize(new Dimension(800, 30));
 
 
         eventListPanel = new JPanel();
@@ -107,10 +111,8 @@ public class CreateEventPage extends UIPage {
         eventListPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
         eventListPanel.add(eventListLabel);
         eventListPanel.add(Box.createRigidArea(new Dimension(0, 5)));
-        eventListPanel.add(eventComboBox); // Added the combo box directly
+        eventListPanel.add(eventComboBox);
         
-        // Removed setPreferredSize for overall panel, relying on BoxLayout and setMaximumSize
-        // eventListPanel's height will now adjust to its contents (label + combo box)
         eventListPanel.setMaximumSize(new Dimension(800, Integer.MAX_VALUE)); 
 
 
@@ -121,7 +123,6 @@ public class CreateEventPage extends UIPage {
         eventInputPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         eventInputPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
         
-        // Removed setPreferredSize for overall panel, relying on BoxLayout and setMaximumSize
         eventInputPanel.setMaximumSize(new Dimension(800, Integer.MAX_VALUE)); 
 
 
@@ -165,7 +166,8 @@ public class CreateEventPage extends UIPage {
         eventInputPanel.add(descriptionPanel);
         eventInputPanel.add(Box.createRigidArea(new Dimension(0, 5)));
 
-        eventDateField = new JTextField("YYYY-MM-DD", 10);
+        // Initializing eventDateField with current date
+        eventDateField = new JTextField(LocalDate.now().toString(), 10); // Set current date as default
         eventInputPanel.add(createInputRow("Event Date:", eventDateField));
         eventInputPanel.add(Box.createRigidArea(new Dimension(0, 5)));
 
@@ -209,7 +211,7 @@ public class CreateEventPage extends UIPage {
         add(centerWrapper, BorderLayout.CENTER);
         add(bottomPanel, BorderLayout.SOUTH);
 
-        refreshEventList(); // Initial population of the combo box
+        refreshEventList(); 
 
         addButton.addActionListener(new ActionListener() {
             @Override
@@ -220,6 +222,7 @@ public class CreateEventPage extends UIPage {
     }
 
     // --- Helper method to create input rows ---
+    // (Only one version needed now since we're back to JTextField)
     private JPanel createInputRow(String labelText, JTextField textField) {
         JPanel rowPanel = new JPanel(new BorderLayout(5, 0));
         rowPanel.setBackground(new Color(80, 76, 112));
@@ -244,7 +247,7 @@ public class CreateEventPage extends UIPage {
     private void addNewEvent() {
         String eventName = eventNameField.getText().trim();
         String eventDescription = eventDescriptionArea.getText().trim();
-        String eventDateStr = eventDateField.getText().trim();
+        String eventDateStr = eventDateField.getText().trim(); // Get string directly from JTextField
         String organizerName = organizerNameField.getText().trim();
         String venue = venueField.getText().trim();
         String capacityStr = capacityField.getText().trim();
@@ -258,7 +261,7 @@ public class CreateEventPage extends UIPage {
 
         LocalDate eventDate;
         try {
-            eventDate = LocalDate.parse(eventDateStr);
+            eventDate = LocalDate.parse(eventDateStr); // Parse string to LocalDate
         } catch (DateTimeParseException e) {
             JOptionPane.showMessageDialog(this, "Invalid Date format. Please use `YYYY-MM-DD`.", "Input Error", JOptionPane.ERROR_MESSAGE);
             return;
@@ -293,7 +296,7 @@ public class CreateEventPage extends UIPage {
         if (csvEventManager.addEvent(newEvent)) {
             JOptionPane.showMessageDialog(this, "Event '" + newEvent.getEventName() + "' added successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
             clearInputFields();
-            refreshEventList(); // Refresh combo box after adding
+            refreshEventList(); 
         } else {
             JOptionPane.showMessageDialog(this, "Failed to add event. It might already exist or another error occurred.", "Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -302,7 +305,7 @@ public class CreateEventPage extends UIPage {
     private void clearInputFields() {
         eventNameField.setText("");
         eventDescriptionArea.setText("");
-        eventDateField.setText("YYYY-MM-DD");
+        eventDateField.setText("YYYY-MM-DD"); // Reverted to placeholder
         organizerNameField.setText("");
         venueField.setText("");
         capacityField.setText("");
@@ -310,13 +313,13 @@ public class CreateEventPage extends UIPage {
     }
 
     private void refreshEventList() {
-        eventComboBoxModel.removeAllElements(); // Clear existing items
+        eventComboBoxModel.removeAllElements(); 
         List<Event> events = csvEventManager.getAllEvents();
         for (Event event : events) {
-            eventComboBoxModel.addElement(event); // Add events to the combo box model
+            eventComboBoxModel.addElement(event); 
         }
         if (!events.isEmpty()) {
-            eventComboBox.setSelectedIndex(0); // Select the first item if list is not empty
+            eventComboBox.setSelectedIndex(0); 
         }
     }
 }
