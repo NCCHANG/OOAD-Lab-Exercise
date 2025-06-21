@@ -1,7 +1,10 @@
+// RegisterPage.java
 package UI;
 
 import java.awt.*;
 import javax.swing.*;
+
+import Data.CsvEventManager;
 
 public class RegisterPage extends UIPage {
     private JPanel topPanel;
@@ -16,8 +19,11 @@ public class RegisterPage extends UIPage {
     private JList<String> eventList;
     private JTextField eventInfoField;
     private JButton registerButton;
-
-    public RegisterPage() {
+    private CsvEventManager csvEventManager;
+    // Modified constructor to accept UIController
+    public RegisterPage(UIController controller, CsvEventManager csvEventManager) {
+        super(controller);
+        this.csvEventManager = csvEventManager;
         initUI();
     }
 
@@ -27,12 +33,12 @@ public class RegisterPage extends UIPage {
         topPanel = new JPanel();
         topPanel.setBackground(new Color(191, 151, 139));
         topPanel.setPreferredSize(new java.awt.Dimension(1200, 50));
-        
-        centerPanel = new JPanel(); 
-        centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS)); 
+
+        centerPanel = new JPanel();
+        centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
         centerPanel.setBackground(new Color(180, 180, 180));
         centerPanel.setBorder(BorderFactory.createEmptyBorder(20, 60, 20, 60)); // padding
-        
+
         // Center wrapper for vertical centering
         centerWrapper = new JPanel(new GridBagLayout());
         centerWrapper.setBackground(new Color(180, 180, 180));
@@ -92,14 +98,14 @@ public class RegisterPage extends UIPage {
 
         // add listener when user selects an event from the list
         eventList.addListSelectionListener(e -> {
-                String selected = eventList.getSelectedValue();
-                eventInfoField.setText(selected != null ? selected : "");
+            String selected = eventList.getSelectedValue();
+            eventInfoField.setText(selected != null ? selected : "");
         });
 
         centerPanel.add(eventListPanel);
         centerPanel.add(Box.createRigidArea(new Dimension(0, 10)));
         centerPanel.add(eventInfoPanel);
-        
+
         bottomPanel = new JPanel();
         bottomPanel.setBackground(new Color(113, 91, 81));
         bottomPanel.setPreferredSize(new Dimension(1200, 50));

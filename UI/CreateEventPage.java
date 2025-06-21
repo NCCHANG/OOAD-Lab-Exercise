@@ -1,21 +1,33 @@
+// CreateEventPage.java
 package UI;
+
+import Data.CsvEventManager;
+import Model.Event;
 import java.awt.GridBagLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
-import javax.swing.DefaultListModel;
+import javax.swing.DefaultComboBoxModel; // Changed from DefaultListModel
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JList;
+import javax.swing.JComboBox; // Changed from JList
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
+import javax.swing.JScrollPane; // Still needed for JTextArea
 import javax.swing.JTextField;
-
 import javax.swing.Box;
+import javax.swing.JTextArea;
 
 public class CreateEventPage extends UIPage {
     private JPanel topPanel;
@@ -25,47 +37,68 @@ public class CreateEventPage extends UIPage {
     private JPanel bottomPanel;
 
     private JLabel eventListLabel;
-    private DefaultListModel<String> eventListModel;
-    private JScrollPane eventListScroll;
-    private JList<String> eventList;
-    private JTextField eventInfoField;
+    private DefaultComboBoxModel<Event> eventComboBoxModel; // Changed to ComboBoxModel
+    private JComboBox<Event> eventComboBox; // Changed to JComboBox
+
+    private JTextField eventNameField;
+    private JTextArea eventDescriptionArea;
+    private JTextField eventDateField;
+    private JTextField organizerNameField;
+    private JTextField venueField;
+    private JTextField capacityField;
+    private JTextField registrationFeeField;
+
     private JButton addButton;
 
-    public CreateEventPage() {
+    private CsvEventManager csvEventManager;
+
+    public CreateEventPage(UIController controller, CsvEventManager csvEventManager) {
+        super(controller);
+        this.csvEventManager = csvEventManager;
         initUI();
     }
 
     @Override
     public void initUI() {
         setLayout(new java.awt.BorderLayout());
-        topPanel = new JPanel();
+
+        topPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         topPanel.setBackground(new Color(191, 151, 139));
         topPanel.setPreferredSize(new java.awt.Dimension(1200, 50));
+        JButton returnButton = new JButton("Return");
+        returnButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                controller.showEventOrganizerFunctionalityPage();
+            }
+        });
+        topPanel.add(returnButton);
 
-        
-        centerPanel = new JPanel(); 
-        centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS)); 
+        centerPanel = new JPanel();
+        centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
         centerPanel.setBackground(new Color(180, 180, 180));
-        centerPanel.setBorder(BorderFactory.createEmptyBorder(20, 60, 20, 60)); // padding
-        
-        // Center wrapper for vertical centering
+        centerPanel.setBorder(BorderFactory.createEmptyBorder(20, 30, 20, 30));
+
         centerWrapper = new JPanel(new GridBagLayout());
         centerWrapper.setBackground(new Color(180, 180, 180));
-        centerWrapper.add(centerPanel, new java.awt.GridBagConstraints());
+        
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.weightx = 1.0;
+        gbc.gridwidth = GridBagConstraints.REMAINDER;
+        centerWrapper.add(centerPanel, gbc);
 
-        eventListLabel = new JLabel("Event List:");
+
+        // --- Event List Section (Top Part of Center Panel) ---
+        eventListLabel = new JLabel("Existing Events:");
         eventListLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-        eventListModel = new DefaultListModel<>();
-        eventList = new JList<>(eventListModel);
-        //tochange: sample data
-        eventListModel.addElement("Birthday Party");
-        eventListModel.addElement("Team Meeting");
-        eventListModel.addElement("Conference 2025");
-        //------------------------
-        eventListScroll = new JScrollPane(eventList);
-        eventListScroll.setPreferredSize(new Dimension(600, 180));
-        eventListScroll.setAlignmentX(Component.LEFT_ALIGNMENT);
+        eventComboBoxModel = new DefaultComboBoxModel<>(); // Changed model type
+        eventComboBox = new JComboBox<>(eventComboBoxModel); // Changed to JComboBox
+        eventComboBox.setAlignmentX(Component.LEFT_ALIGNMENT);
+        eventComboBox.setPreferredSize(new Dimension(800, 30)); // Set preferred size for combo box
+        eventComboBox.setMaximumSize(new Dimension(800, 30)); // Fixed width and height for combo box
+
 
         eventListPanel = new JPanel();
         eventListPanel.setLayout(new BoxLayout(eventListPanel, BoxLayout.Y_AXIS));
@@ -74,40 +107,100 @@ public class CreateEventPage extends UIPage {
         eventListPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
         eventListPanel.add(eventListLabel);
         eventListPanel.add(Box.createRigidArea(new Dimension(0, 5)));
-        eventListPanel.add(eventListScroll);
+        eventListPanel.add(eventComboBox); // Added the combo box directly
+        
+        // Removed setPreferredSize for overall panel, relying on BoxLayout and setMaximumSize
+        // eventListPanel's height will now adjust to its contents (label + combo box)
+        eventListPanel.setMaximumSize(new Dimension(800, Integer.MAX_VALUE)); 
 
-        // Event Info Section (dark blue background)
-        JPanel eventInfoPanel = new JPanel();
-        eventInfoPanel.setLayout(new BoxLayout(eventInfoPanel, BoxLayout.Y_AXIS));
-        eventInfoPanel.setBackground(new Color(80, 76, 112));
-        eventInfoPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        eventInfoPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-        JLabel eventInfoLabel = new JLabel("Event Info:");
-        eventInfoLabel.setForeground(Color.WHITE);
-        eventInfoLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        // --- Event Info Input Section (Bottom Part of Center Panel) ---
+        JPanel eventInputPanel = new JPanel();
+        eventInputPanel.setLayout(new BoxLayout(eventInputPanel, BoxLayout.Y_AXIS));
+        eventInputPanel.setBackground(new Color(80, 76, 112));
+        eventInputPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        eventInputPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        
+        // Removed setPreferredSize for overall panel, relying on BoxLayout and setMaximumSize
+        eventInputPanel.setMaximumSize(new Dimension(800, Integer.MAX_VALUE)); 
 
-        JPanel inputPanel = new JPanel(new BorderLayout(10, 0));
-        inputPanel.setBackground(new Color(80, 76, 112));
 
-        eventInfoField = new JTextField();
-        eventInfoField.setPreferredSize(new Dimension(400, 35));
-        eventInfoField.setBackground(new Color(180, 180, 200));
+        JLabel createEventLabel = new JLabel("Create New Event:");
+        createEventLabel.setForeground(Color.WHITE);
+        createEventLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        eventInputPanel.add(createEventLabel);
+        eventInputPanel.add(Box.createRigidArea(new Dimension(0, 10)));
 
-        addButton = new JButton("Add");
-        addButton.setPreferredSize(new Dimension(80, 35));
+        // --- Add input fields using the helper method ---
+        eventNameField = new JTextField(20);
+        eventInputPanel.add(createInputRow("Event Name:", eventNameField));
+        eventInputPanel.add(Box.createRigidArea(new Dimension(0, 5)));
 
-        inputPanel.add(eventInfoField, BorderLayout.CENTER);
-        inputPanel.add(addButton, BorderLayout.EAST);
+        // Description uses JTextArea in a JScrollPane
+        JPanel descriptionPanel = new JPanel(new BorderLayout(5, 0));
+        descriptionPanel.setBackground(new Color(80, 76, 112));
+        JLabel descLabel = new JLabel("Description:");
+        descLabel.setForeground(Color.WHITE);
+        descLabel.setPreferredSize(new Dimension(120, 25));
+        
+        eventDescriptionArea = new JTextArea(3, 20);
+        eventDescriptionArea.setLineWrap(true);
+        eventDescriptionArea.setWrapStyleWord(true);
+        eventDescriptionArea.setMinimumSize(new Dimension(50, 50));
+        eventDescriptionArea.setPreferredSize(new Dimension(50, 60));
+        eventDescriptionArea.setMaximumSize(new Dimension(Integer.MAX_VALUE, 80)); 
+        
+        JScrollPane descScrollPane = new JScrollPane(eventDescriptionArea);
+        descScrollPane.setMinimumSize(new Dimension(50, 60));
+        descScrollPane.setPreferredSize(new Dimension(50, 70));
+        descScrollPane.setMaximumSize(new Dimension(Integer.MAX_VALUE, 90)); 
 
-        eventInfoPanel.add(eventInfoLabel);
-        eventInfoPanel.add(Box.createRigidArea(new Dimension(0, 5)));
-        eventInfoPanel.add(inputPanel);
+        descriptionPanel.add(descLabel, BorderLayout.WEST);
+        descriptionPanel.add(descScrollPane, BorderLayout.CENTER);
+
+        descriptionPanel.setMinimumSize(new Dimension(100, 70));
+        descriptionPanel.setPreferredSize(new Dimension(500, 70)); 
+        descriptionPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 70)); 
+        descriptionPanel.setAlignmentX(Component.LEFT_ALIGNMENT); 
+        eventInputPanel.add(descriptionPanel);
+        eventInputPanel.add(Box.createRigidArea(new Dimension(0, 5)));
+
+        eventDateField = new JTextField("YYYY-MM-DD", 10);
+        eventInputPanel.add(createInputRow("Event Date:", eventDateField));
+        eventInputPanel.add(Box.createRigidArea(new Dimension(0, 5)));
+
+        organizerNameField = new JTextField(20);
+        eventInputPanel.add(createInputRow("Organizer Name:", organizerNameField));
+        eventInputPanel.add(Box.createRigidArea(new Dimension(0, 5)));
+
+        venueField = new JTextField(20);
+        eventInputPanel.add(createInputRow("Venue:", venueField));
+        eventInputPanel.add(Box.createRigidArea(new Dimension(0, 5)));
+
+        capacityField = new JTextField(10);
+        eventInputPanel.add(createInputRow("Capacity:", capacityField));
+        eventInputPanel.add(Box.createRigidArea(new Dimension(0, 5)));
+
+        registrationFeeField = new JTextField(10);
+        eventInputPanel.add(createInputRow("Reg. Fee (RM):", registrationFeeField));
+        eventInputPanel.add(Box.createRigidArea(new Dimension(0, 15)));
+
+        // Add Button
+        addButton = new JButton("Add Event");
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        buttonPanel.setBackground(new Color(80, 76, 112));
+        buttonPanel.add(addButton);
+        eventInputPanel.add(buttonPanel);
+
+        eventInputPanel.add(Box.createVerticalGlue());
+
 
         centerPanel.add(eventListPanel);
-        centerPanel.add(Box.createRigidArea(new Dimension(0, 10)));
-        centerPanel.add(eventInfoPanel);
-        
+        centerPanel.add(Box.createRigidArea(new Dimension(0, 10))); 
+        centerPanel.add(eventInputPanel);
+        centerPanel.add(Box.createVerticalGlue());
+
+
         bottomPanel = new JPanel();
         bottomPanel.setBackground(new Color(113, 91, 81));
         bottomPanel.setPreferredSize(new Dimension(1200, 50));
@@ -115,6 +208,115 @@ public class CreateEventPage extends UIPage {
         add(topPanel, BorderLayout.NORTH);
         add(centerWrapper, BorderLayout.CENTER);
         add(bottomPanel, BorderLayout.SOUTH);
+
+        refreshEventList(); // Initial population of the combo box
+
+        addButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                addNewEvent();
+            }
+        });
     }
-    
+
+    // --- Helper method to create input rows ---
+    private JPanel createInputRow(String labelText, JTextField textField) {
+        JPanel rowPanel = new JPanel(new BorderLayout(5, 0));
+        rowPanel.setBackground(new Color(80, 76, 112));
+        JLabel label = new JLabel(labelText);
+        label.setForeground(Color.WHITE);
+        label.setPreferredSize(new Dimension(120, 25));
+        rowPanel.add(label, BorderLayout.WEST);
+
+        textField.setPreferredSize(new Dimension(textField.getPreferredSize().width, 35));
+        textField.setMaximumSize(new Dimension(Integer.MAX_VALUE, 30));
+        
+        rowPanel.add(textField, BorderLayout.CENTER);
+        rowPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+        rowPanel.setMinimumSize(new Dimension(100, 30));
+        rowPanel.setPreferredSize(new Dimension(500, 30)); 
+        rowPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 30));
+        
+        return rowPanel;
+    }
+
+    private void addNewEvent() {
+        String eventName = eventNameField.getText().trim();
+        String eventDescription = eventDescriptionArea.getText().trim();
+        String eventDateStr = eventDateField.getText().trim();
+        String organizerName = organizerNameField.getText().trim();
+        String venue = venueField.getText().trim();
+        String capacityStr = capacityField.getText().trim();
+        String registrationFeeStr = registrationFeeField.getText().trim();
+
+        if (eventName.isEmpty() || eventDateStr.isEmpty() || organizerName.isEmpty() ||
+            venue.isEmpty() || capacityStr.isEmpty() || registrationFeeStr.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please fill in all required fields.", "Input Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        LocalDate eventDate;
+        try {
+            eventDate = LocalDate.parse(eventDateStr);
+        } catch (DateTimeParseException e) {
+            JOptionPane.showMessageDialog(this, "Invalid Date format. Please use `YYYY-MM-DD`.", "Input Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        int capacity;
+        try {
+            capacity = Integer.parseInt(capacityStr);
+            if (capacity <= 0) {
+                JOptionPane.showMessageDialog(this, "Capacity must be a positive number.", "Input Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Invalid Capacity. Please enter a whole number.", "Input Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        double registrationFee;
+        try {
+            registrationFee = Double.parseDouble(registrationFeeStr);
+            if (registrationFee < 0) {
+                JOptionPane.showMessageDialog(this, "Registration Fee cannot be negative.", "Input Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Invalid Registration Fee. Please enter a number.", "Input Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        Event newEvent = new Event(eventName, eventDescription, eventDate, organizerName, venue, capacity, registrationFee);
+
+        if (csvEventManager.addEvent(newEvent)) {
+            JOptionPane.showMessageDialog(this, "Event '" + newEvent.getEventName() + "' added successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+            clearInputFields();
+            refreshEventList(); // Refresh combo box after adding
+        } else {
+            JOptionPane.showMessageDialog(this, "Failed to add event. It might already exist or another error occurred.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void clearInputFields() {
+        eventNameField.setText("");
+        eventDescriptionArea.setText("");
+        eventDateField.setText("YYYY-MM-DD");
+        organizerNameField.setText("");
+        venueField.setText("");
+        capacityField.setText("");
+        registrationFeeField.setText("");
+    }
+
+    private void refreshEventList() {
+        eventComboBoxModel.removeAllElements(); // Clear existing items
+        List<Event> events = csvEventManager.getAllEvents();
+        for (Event event : events) {
+            eventComboBoxModel.addElement(event); // Add events to the combo box model
+        }
+        if (!events.isEmpty()) {
+            eventComboBox.setSelectedIndex(0); // Select the first item if list is not empty
+        }
+    }
 }

@@ -1,9 +1,13 @@
+// UpdateEventPage.java
 package UI;
 import java.awt.GridBagLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.BorderLayout;
+import java.awt.FlowLayout; // Import FlowLayout
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -14,6 +18,8 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+
+import Data.CsvEventManager;
 
 import javax.swing.Box;
 
@@ -31,21 +37,36 @@ public class UpdateEventPage extends UIPage {
     private JTextField eventInfoField;
     private JButton updateButton;
 
-    public UpdateEventPage() {
+    // Modified constructor to accept UIController
+    private CsvEventManager csvEventManager;
+    public UpdateEventPage(UIController controller, CsvEventManager csvEventManager) {
+        super(controller);
+        this.csvEventManager = csvEventManager;
         initUI();
     }
     @Override
     public void initUI() {
         setLayout(new java.awt.BorderLayout());
-        topPanel = new JPanel();
+
+        // Top Panel with Return Button
+        topPanel = new JPanel(new FlowLayout(FlowLayout.LEFT)); // Set FlowLayout.LEFT
         topPanel.setBackground(new Color(191, 151, 139));
         topPanel.setPreferredSize(new java.awt.Dimension(1200, 50));
-        
-        centerPanel = new JPanel(); 
-        centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS)); 
+        JButton returnButton = new JButton("Return");
+        returnButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                controller.showEventOrganizerFunctionalityPage(); // Go back to the organizer page
+            }
+        });
+        topPanel.add(returnButton); // Add the return button to the top panel
+
+
+        centerPanel = new JPanel();
+        centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
         centerPanel.setBackground(new Color(180, 180, 180));
         centerPanel.setBorder(BorderFactory.createEmptyBorder(20, 60, 20, 60)); // padding
-        
+
         // Center wrapper for vertical centering
         centerWrapper = new JPanel(new GridBagLayout());
         centerWrapper.setBackground(new Color(180, 180, 180));
@@ -106,14 +127,14 @@ public class UpdateEventPage extends UIPage {
 
         // add listener when user selects an event from the list
         eventList.addListSelectionListener(e -> {
-                String selected = eventList.getSelectedValue();
-                eventInfoField.setText(selected != null ? selected : "");
+            String selected = eventList.getSelectedValue();
+            eventInfoField.setText(selected != null ? selected : "");
         });
 
         centerPanel.add(eventListPanel);
         centerPanel.add(Box.createRigidArea(new Dimension(0, 10)));
         centerPanel.add(eventInfoPanel);
-        
+
         bottomPanel = new JPanel();
         bottomPanel.setBackground(new Color(113, 91, 81));
         bottomPanel.setPreferredSize(new Dimension(1200, 50));
@@ -121,5 +142,5 @@ public class UpdateEventPage extends UIPage {
         add(topPanel, BorderLayout.NORTH);
         add(centerWrapper, BorderLayout.CENTER);
         add(bottomPanel, BorderLayout.SOUTH);
-    }  
+    }
 }

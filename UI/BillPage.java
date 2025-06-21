@@ -1,9 +1,12 @@
+// BillPage.java
 package UI;
 
 import java.awt.*;
 import javax.swing.*;
 
-public class BillPage extends UIPage{ 
+import Data.CsvEventManager;
+
+public class BillPage extends UIPage {
     private JPanel topPanel;
     private JPanel centerWrapper;
     private JPanel centerPanel;
@@ -15,21 +18,27 @@ public class BillPage extends UIPage{
     private JScrollPane eventListScroll;
     private JList<String> eventList;
     private JButton payButton;
-    public BillPage() {
+    private CsvEventManager csvEventManager;
+    // Modified constructor to accept UIController
+
+    public BillPage(UIController controller, CsvEventManager csvEventManager) {
+        super(controller);
+        this.csvEventManager = csvEventManager;
         initUI();
     }
+
     @Override
     public void initUI() {
         setLayout(new java.awt.BorderLayout());
         topPanel = new JPanel();
         topPanel.setBackground(new Color(191, 151, 139));
         topPanel.setPreferredSize(new java.awt.Dimension(1200, 50));
-        
-        centerPanel = new JPanel(); 
-        centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS)); 
+
+        centerPanel = new JPanel();
+        centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
         centerPanel.setBackground(new Color(180, 180, 180));
         centerPanel.setBorder(BorderFactory.createEmptyBorder(20, 60, 20, 60)); // padding
-        
+
         // Center wrapper for vertical centering
         centerWrapper = new JPanel(new GridBagLayout());
         centerWrapper.setBackground(new Color(180, 180, 180));
@@ -65,7 +74,7 @@ public class BillPage extends UIPage{
         centerPanel.add(eventListPanel);
         centerPanel.add(Box.createRigidArea(new Dimension(0, 10)));
         centerPanel.add(payButton);
-        
+
         bottomPanel = new JPanel();
         bottomPanel.setBackground(new Color(113, 91, 81));
         bottomPanel.setPreferredSize(new Dimension(1200, 50));
